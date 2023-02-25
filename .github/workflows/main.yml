@@ -19,11 +19,11 @@ jobs:
       env:
         AWS_SHARED_CREDENTIALS_FILE: ./.aws/credentials
         AWS_PROFILE: default
-        AWS_DEFAULT_REGION: us-east-1
+        AWS_DEFAULT_REGION: us-east-2
       run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 770526846351.dkr.ecr.us-east-1.amazonaws.com
+        aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 359409690900.dkr.ecr.us-east-2.amazonaws.com
         docker build -t crec_app .
-        docker tag crec_app:latest 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
-        docker push 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
+        docker tag crec-app:latest 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest
+        docker push 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest
 
 
