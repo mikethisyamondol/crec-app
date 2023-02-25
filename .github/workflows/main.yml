@@ -25,3 +25,5 @@ jobs:
         docker build -t crec_app .
         docker tag crec_app:latest 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
         docker push 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
+
+
