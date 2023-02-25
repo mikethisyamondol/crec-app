@@ -1,0 +1,34 @@
+name: deploy-web-app
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup AWS
+      run: |
+          mkdir ./.aws
+          touch ./.aws/credentials
+          echo '${{ secrets.AWS_CREDENTIALS_FILE }}' > ./.aws/credentials 
+    - name: ECR
+      env:
+        AWS_SHARED_CREDENTIALS_FILE: ./.aws/credentials
+        AWS_PROFILE: default
+        AWS_DEFAULT_REGION: us-east-1
+      run: |
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 770526846351.dkr.ecr.us-east-1.amazonaws.com
+        docker build -t crec_app .
+        docker tag crec_app:latest 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
+        docker push 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
+    - name: Configure AWS credentials
+      id: aws-credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
