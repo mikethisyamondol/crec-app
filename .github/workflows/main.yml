@@ -25,5 +25,25 @@ jobs:
         docker build -t crec-app .
         docker tag crec-app:latest 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest
         docker push 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest
+    - name: Configure AWS credentials
+      id: aws-credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2 
+    - name: App Runner
+      id: deploy-apprunner-v2
+      uses: awslabs/amazon-app-runner-deploy@main 
+      with:
+        service: crec-app
+        image: 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest     
+        access-role-arn: ${{ secrets.APP_RUNNER_ARN }}
+        runtime: python3        
+        region: us-east-2
+        cpu : 1
+        memory : 2
+        port: 8501
+        wait-for-service-stability-seconds: 1200
 
 
