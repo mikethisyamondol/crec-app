@@ -37,7 +37,7 @@ jobs:
       uses: awslabs/amazon-app-runner-deploy@main 
       with:
         service: crec-app
-        image: 359409690900.dkr.ecr.us-east-2.amazonaws.com
+        image: 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest
         access-role-arn: ${{ secrets.APP_RUNNER_ARN }}
         runtime: python3        
         region: us-east-2
