@@ -25,10 +25,3 @@ jobs:
         docker build -t crec_app .
         docker tag crec_app:latest 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
         docker push 770526846351.dkr.ecr.us-east-1.amazonaws.com/crec_app:latest
-    - name: Configure AWS credentials
-      id: aws-credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
