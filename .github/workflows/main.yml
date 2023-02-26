@@ -25,6 +25,6 @@ jobs:
         docker build -t crec-app .
         docker tag crec-app:latest 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest
         docker push 359409690900.dkr.ecr.us-east-2.amazonaws.com/crec-app:latest
-        
+        aws ec2 reboot-instances --instance-ids i-0d86c45e18a845fb1
 
 
