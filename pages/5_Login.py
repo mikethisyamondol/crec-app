@@ -11,6 +11,7 @@ import pydeck as pdk
 import hydralit_components as hc
 import json
 import plotly.graph_objects as go
+import boto3
 
 #--- Load Assets ----
 img_crec_logo = Image.open("images/crec_logo.png")
@@ -23,6 +24,19 @@ img_buildings = Image.open("images/buildings.png")
 img_crecddp = Image.open("images/CRECddp.png")
 img_crecddp_2 = Image.open("images/CRECddp_2.png")
 crecddp_3 = Image.open("images/CRECddp_3.png")
+
+#------S3-------
+
+s3 = boto3.client('s3')
+bucket = 'mthisyamondol'
+folder = 'crec-app-data'
+
+join_loc = 's3://{}/{}/{}'.format(bucket, folder, 'join.csv')
+inv_loc = 's3://{}/{}/{}'.format(bucket, folder, 'investor_map.csv')
+txn_sim_loc = 's3://{}/{}/{}'.format(bucket, folder, 'region_transaction_euclidean_sim_result_top10.csv')
+front_end_total_loc = 's3://{}/{}/{}'.format(bucket, folder, 'front_end_total.csv')
+median_values_loc = 's3://{}/{}/{}'.format(bucket, folder, 'Median_Values.csv')
+recent_sales_loc = 's3://{}/{}/{}'.format(bucket, folder, 'Recent_Sales.csv')
 
 #--- page layout ----
 st.set_page_config(page_title="Capstone Real Estate Consultants", page_icon=":house:", layout="wide", initial_sidebar_state="collapsed")
@@ -66,8 +80,8 @@ def check_password():
         return True
 
 if check_password():
-
-    df = pd.read_csv("./data/join.csv", index_col=False)
+    df = pd.read_csv(join_loc, index_col=False)
+    # df = pd.read_csv("./data/join.csv", index_col=False)
     @st.experimental_singleton
     def get_data() -> pd.DataFrame:
         start = time.time()
@@ -166,15 +180,19 @@ if check_password():
                     results_list.append([inv_name,inv_city,inv_state,inv_email,distance])
                 return results_list
 
-            inv_loc = './data/investor_map.csv'
-            join_location = './data/join.csv'
-            txn_sim_loc = './data/region_transaction_euclidean_sim_result_top10.csv'
+            # inv_loc = './data/investor_map.csv'
+            # join_location = './data/join.csv'
+            # txn_sim_loc = './data/region_transaction_euclidean_sim_result_top10.csv'
 
-            txn_sim = pd.read_csv('./data/region_transaction_euclidean_sim_result_top10.csv')
-            df_total = pd.read_csv('./data/front_end_total.csv')
-            investor_map = pd.read_csv(inv_loc)
+            # txn_sim = pd.read_csv('./data/region_transaction_euclidean_sim_result_top10.csv')
+            # df_total = pd.read_csv('./data/front_end_total.csv')
+            # investor_map = pd.read_csv(inv_loc)
 
-            prop_map = pd.read_csv(join_location)
+            txn_sim = pd.read_csv(txn_sim_loc, index_col=False)
+            df_total = pd.read_csv(front_end_total_loc, index_col=False)
+            investor_map = pd.read_csv(inv_loc, index_col=False)
+
+            prop_map = pd.read_csv(join_loc)
 
             prop_map.columns = ['Unnamed: 0_x', 'Unnamed: 0.1_x', 'id', 'buyerId', 'importDate',
                 'taxId', 'mailId', 'name', 'hasPhone', 'hasEmail', 'isEntity',
@@ -270,12 +288,14 @@ if check_password():
 
                 with tab2:
                     st.write(':blue[Median Localized Home Values]')
-                    median_values = pd.read_csv('./data/Median_Values.csv')
+                    # median_values = pd.read_csv('./data/Median_Values.csv')
+                    median_values = pd.read_csv(median_values_loc)
                     st.dataframe(median_values.style.set_precision(2))
 
                 with tab3:
                     st.write(':blue[**Nearby Recent Sales**]')
-                    recent_sales = pd.read_csv('./data/Recent_Sales.csv')
+                    # recent_sales = pd.read_csv('./data/Recent_Sales.csv')
+                    recent_sales = pd.read_csv(recent_sales_loc)
                     recent_sales = pd.DataFrame(recent_sales)
                     recent_sales.columns = ['MLS Transaction', 'Address', 'Owner', 'Sale Date', 'Sale Price']
                     st.dataframe(recent_sales.style.set_precision(2))
