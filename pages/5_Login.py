@@ -80,7 +80,7 @@ def check_password():
         return True
 
 if check_password():
-    df = pd.read_csv(join_loc, index_col=False)
+    df = pd.read_csv('s3://mthisyamondol/crec-app-data/join.csv', index_col=False)
     # df = pd.read_csv("./data/join.csv", index_col=False)
     @st.experimental_singleton
     def get_data() -> pd.DataFrame:
