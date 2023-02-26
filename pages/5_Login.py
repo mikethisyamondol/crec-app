@@ -78,7 +78,7 @@ if check_password():
 
     addresses = df['address'].values#.tolist()
 
-    input = st.selectbox("Enter Address or Select From Dropdown", addresses)
+    input = st.selectbox("Enter Address or Select From Dropdown", addresses, index=10)
 
     @st.experimental_memo
     def search_data(search_term: str) -> pd.DataFrame:
@@ -153,7 +153,7 @@ if check_password():
                 scores_list = [x['euclidean_distance'] for x in res]
                 
                 for i,el in enumerate(ids_list):
-                    bdf = prop_map[prop_map['id']== el]
+                    bdf = df_total[df_total['id']== el]
                     #print(bdf)
                     bid = bdf['buyerId'].values[0]
                     inv_city = bdf['OwnerCity'].values[0]
@@ -168,10 +168,10 @@ if check_password():
 
             inv_loc = './data/investor_map.csv'
             join_location = './data/join.csv'
-            txn_sim_loc = './data/transaction_euclidean_sim_result.csv'
+            txn_sim_loc = './data/region_transaction_euclidean_sim_result_top10.csv'
 
-            txn_sim = pd.read_csv('./data/transaction_euclidean_sim_result.csv')
-
+            txn_sim = pd.read_csv('./data/region_transaction_euclidean_sim_result_top10.csv')
+            df_total = pd.read_csv('./data/front_end_total.csv')
             investor_map = pd.read_csv(inv_loc)
 
             prop_map = pd.read_csv(join_location)
@@ -191,8 +191,8 @@ if check_password():
                 city_addresses = prop_map['address'].values
                 recommendations = ShallowMatchEuclid(city_addresses[index])
                 recommendations = pd.DataFrame(recommendations)
-                recommendations.columns = ['Investor Name', 'City', 'State', 'Contact', 'Euclidean Distance']
-                st.dataframe(recommendations)
+                recommendations.columns = ['Investor Name', 'City', 'State', 'Contact', 'Euclid Distance']
+                st.dataframe(recommendations, height=210)
 
     #### PyDeck Viz Mapping ###
 
@@ -244,7 +244,6 @@ if check_password():
                 st.subheader('Market Features')
                 time.sleep(1.5)
                 tab1, tab2, tab3 = st.tabs(["Market Scoring", "Median Home Values", "Recent Sales"])
-                
                 with tab1:
                     st.subheader(':blue[Buyer/Seller Market Indicator]')
 
