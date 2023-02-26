@@ -10,3 +10,5 @@ requests==2.28.2
 pydeck==0.8.0
 hydralit_components==1.0.10
 plotly==5.13.1
+fsspec==2023.1.0
+s3fs==2023.1.0
