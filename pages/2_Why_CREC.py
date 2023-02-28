@@ -71,7 +71,7 @@ with st.container():
         st.write("Wouldn't it be nice to know who would buy a property long before they have seen it?")
         st.write("CREC's DealData platform automates connections between buyers and property features, enabling sellers to pursue high probability interested parties fast.")
         st.write("This ML technique works in reverse, where buyers can identify best-fit properties, and get notified if and when an owner is ready to sell.")
-        st.image(img_buyer, width=450)
+        st.image(img_buyer)
     st.write("- - -")
     st.write("##")
     st.header("The Approach")
@@ -96,7 +96,7 @@ with st.container():
             st.image(img_data_3, width=250)
         st.write("- - -")
         st.subheader("Descriptive Statistics")
-        st.image(img_data_stats, width=800)
+        st.image(img_data_stats)
     with tab5:
         st.subheader("The Tech")
         st.write("Capstone Real Estate Consultants plans to utilize the following cutting edge technologies to execute the initial scope of work, and ultimately deliver the business values as stated in the project goals and deliverables.")
