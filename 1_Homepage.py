@@ -27,7 +27,7 @@ st.write("##")
 st.subheader("these areas of expertise converge into CREC's single-pane platform offering:")
 st.write("##")
 
-st.image(img_crecddp, width=900)
+st.image(img_crecddp)
 
 st.image(img_triangles)
 st.write("- - -")
